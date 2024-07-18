@@ -1,0 +1,10 @@
+version: '3.7'
+services:
+  server:
+    build: ./server
+    container_name: unihack-server
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
