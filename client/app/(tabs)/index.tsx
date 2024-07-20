@@ -1,70 +1,104 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {StyleSheet, View, Text, Pressable, ImageBackground, Image, useColorScheme, StatusBar} from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {useState} from "react";
+import CheckpointModal from "@/components/CheckpointModal";
+import {MaterialIcons} from "@expo/vector-icons";
+import Checkpoint from "@/components/Checkpoint";
+import {SearchBar} from "@rneui/base";
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    const [showModal, setShowModal] = useState(false);
+    const [search, setSearch] = useState("");
+    const updateSearch = (search: any) => {
+        console.log('Searching: ' + search);
+        setSearch(search);
+    };
+    const HandleModalPress = () => {
+        setShowModal(!showModal);
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.topBar}>
+                <SearchBar
+                    style={styles.searchBar}
+                    inputContainerStyle={styles.searchBarInputContainer}
+                    containerStyle={styles.searchBarContainer}
+                    inputStyle={styles.searchBarInput}
+                    placeholder="Type Here..."
+                    onChangeText={updateSearch}
+                    value={search}
+                />
+                <View style={styles.currentLocation}>
+                    <Text>169, Đường, Quận, Huyện, Thành Phố</Text>
+                </View>
+            </View>
+            <Image
+                source={require('@/assets/images/placeholder_map.png')}
+                style={{width: '100%', height: '100%'}}>
+            </Image>
+            <Checkpoint x={200} y={340} color={'red'} onPress={HandleModalPress}/>
+            {showModal && (
+                <CheckpointModal isVisible={showModal} onClose={HandleModalPress}>
+                    <Text>TODO: We should pass some props here instead</Text>
+                </CheckpointModal>
+            )}
+            <StatusBar />
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+    container: {
+        flex: 1,
+        position: 'relative'
+    },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 12,
+        marginTop: 6,
+        borderColor: '#0a7ea4',
+        borderWidth: 1,
+        shadowColor: 'black',
+        shadowRadius: 2,
+        backgroundColor: '#fff',
+    },
+    topBar: {
+        position: 'absolute',
+        width: '100%',
+        display: 'flex',
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 20,
+        zIndex: 3,
+    },
+    searchBar: {
+        backgroundColor: 'white',
+        width: '100%',
+    },
+    searchBarInput: {
+        backgroundColor: 'white',
+        fontSize: 16,
+    },
+    searchBarInputContainer: {
+        backgroundColor: 'white',
+        borderRadius: 18,
+    },
+    searchBarContainer: {
+        width: '80%',
+        backgroundColor: 'transparent',
+        borderColor : 'white',
+        borderTopWidth: 0,
+        borderBottomWidth: 0,
+        borderRadius: 24,
+    },
+    currentLocation: {
+
+    },
+
+})

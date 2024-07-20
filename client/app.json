@@ -1,14 +1,15 @@
 {
   "expo": {
-    "name": "client",
-    "slug": "client",
+    "name": "TourGuy",
+    "slug": "TourGuy",
     "version": "1.0.0",
+    "runtimeVersion": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/splash_screen.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -30,7 +31,6 @@
       "expo-router"
     ],
     "experiments": {
-      "typedRoutes": true
     }
   }
 }
