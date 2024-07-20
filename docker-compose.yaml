@@ -1,10 +1,50 @@
 version: '3.7'
 services:
-  server:
+  server-dev:
+    depends_on:
+      - postgresql
+    profiles:
+      - "dev"
+    networks:
+      - tour-guy-network
     build: ./server
-    container_name: unihack-server
+    container_name: tour-guy-server
     ports:
       - "8080:8080"
     volumes:
-      - ./client:/app
+      - ./client:/app/server
       - /app/node_modules
+
+  client-dev:
+    depends_on:
+      - server-dev
+    profiles:
+      - "dev"
+    networks:
+      - tour-guy-network
+    build: ./client
+    container_name: tour-guy-client
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./client:/app/client
+      - /app/node_modules
+
+  postgresql:
+    env_file:
+      - .env
+    networks:
+      - tour-guy-network
+    image: postgres:14
+    container_name: tour-guy-postgresql-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+
+networks:
+  tour-guy-network:
+    external: true
+    driver: bridge
