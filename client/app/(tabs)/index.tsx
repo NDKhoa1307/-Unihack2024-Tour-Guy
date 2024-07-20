@@ -1,10 +1,10 @@
-import {StyleSheet, View, Text, Pressable, ImageBackground, Image, useColorScheme, StatusBar} from 'react-native';
+import {StyleSheet, View, Text, Image, StatusBar} from 'react-native';
 
 import {useState} from "react";
-import CheckpointModal from "@/components/CheckpointModal";
+import CheckpointModal from "@/components/app_components/CheckpointModal";
 import {MaterialIcons} from "@expo/vector-icons";
-import Checkpoint from "@/components/Checkpoint";
-import {SearchBar} from "@rneui/base";
+import Checkpoint from "@/components/reusable_component/Checkpoint";
+import TopBar from '@/components/app_components/TopBar';
 
 export default function HomeScreen() {
     const [showModal, setShowModal] = useState(false);
@@ -19,25 +19,14 @@ export default function HomeScreen() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.topBar}>
-                <SearchBar
-                    style={styles.searchBar}
-                    inputContainerStyle={styles.searchBarInputContainer}
-                    containerStyle={styles.searchBarContainer}
-                    inputStyle={styles.searchBarInput}
-                    placeholder="Type Here..."
-                    onChangeText={updateSearch}
-                    value={search}
-                />
-                <View style={styles.currentLocation}>
-                    <Text>169, Đường, Quận, Huyện, Thành Phố</Text>
-                </View>
-            </View>
+            <TopBar search={search} updateSearch={updateSearch}></TopBar>
+            {/* TODO: Replace these below with the true Google Map */}
             <Image
                 source={require('@/assets/images/placeholder_map.png')}
                 style={{width: '100%', height: '100%'}}>
             </Image>
-            <Checkpoint x={200} y={340} color={'red'} onPress={HandleModalPress}/>
+            <Checkpoint x={200} y={290} color={'red'} onPress={HandleModalPress} />
+            {/*TODO: Before show the modal, pass the correct props to it*/}
             {showModal && (
                 <CheckpointModal isVisible={showModal} onClose={HandleModalPress}>
                     <Text>TODO: We should pass some props here instead</Text>
@@ -65,40 +54,6 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowRadius: 2,
         backgroundColor: '#fff',
-    },
-    topBar: {
-        position: 'absolute',
-        width: '100%',
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: 20,
-        zIndex: 3,
-    },
-    searchBar: {
-        backgroundColor: 'white',
-        width: '100%',
-    },
-    searchBarInput: {
-        backgroundColor: 'white',
-        fontSize: 16,
-    },
-    searchBarInputContainer: {
-        backgroundColor: 'white',
-        borderRadius: 18,
-    },
-    searchBarContainer: {
-        width: '80%',
-        backgroundColor: 'transparent',
-        borderColor : 'white',
-        borderTopWidth: 0,
-        borderBottomWidth: 0,
-        borderRadius: 24,
-    },
-    currentLocation: {
-
     },
 
 })

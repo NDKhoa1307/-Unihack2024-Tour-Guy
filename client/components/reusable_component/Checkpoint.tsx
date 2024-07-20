@@ -1,4 +1,4 @@
-import {Pressable, StyleSheet, View} from "react-native";
+import {Pressable, StyleSheet, View, Text} from "react-native";
 import {MaterialIcons} from "@expo/vector-icons";
 
 interface CheckPointProps {
@@ -13,12 +13,20 @@ export default function Checkpoint({x, y, color, onPress}: CheckPointProps) {
     return (
         // This is just a placeholder
         // TODO: Use an actual map and implement the logic to create markers
-        <View style={styles.checkpoint}>
+        <View style={[styles.checkpoint, {top: y, left: x}]}>
+            <View style={{
+                backgroundColor: 'white',
+                padding: 6,
+                borderRadius: 8,
+            }}>
+                <Text>Nice beach</Text>
+                <Text>18:00 - 20:00</Text>
+            </View>
             <Pressable onPress={onPress}>
                 <MaterialIcons
                     name={'location-pin'} color={color} size={36}
                     style={{
-                        top: y, left: x
+
                     }}/>
             </Pressable>
         </View>
@@ -27,6 +35,8 @@ export default function Checkpoint({x, y, color, onPress}: CheckPointProps) {
 const styles = StyleSheet.create({
     checkpoint: {
         position: 'absolute',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
 })
 
